@@ -1,0 +1,37 @@
+services:
+  fastapi:
+    image: pylsl-server-${runtime:-testing}
+    container_name: pylsl-server-${runtime:-testing}
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      args:
+        runtime: ${runtime:-testing}
+    environment:
+      runtime: ${runtime:-testing}
+    ports:
+      - ${HTTP_PORT:-8080}:8080
+    depends_on:
+      - redis
+    networks:
+      pylsl-back:
+      pylsl-ext:
+
+  redis:
+    image: redis:7.4-alpine
+    container_name: pylsl-redis-${runtime:-testing}
+    restart: always
+    ports:
+      - ${REDIS_PORT:-6379}:6379
+    expose:
+      - 6379
+    networks:
+      pylsl-back:
+      pylsl-ext:
+
+networks:
+  pylsl-back:
+    driver: bridge
+    internal: true
+  pylsl-ext:
+    driver: bridge

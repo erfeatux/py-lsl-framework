@@ -1,0 +1,7 @@
+LindenLab.crt
+lsl-fw/
+dist/
+__pycache__/
+*.py[cod]
+.env
+.redis.env
